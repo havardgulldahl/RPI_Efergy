@@ -314,7 +314,7 @@ void display_frame_data(int debug_level, char *msg, unsigned char bytes[], int b
 			printf("%02x ",bytes[i]);
 	
 		if (data_ok_str != (char *) 0)
-			printf(data_ok_str);
+			printf("%s\n", data_ok_str);
 		else {
 			checksum = compute_checksum(bytes, bytecount);
 			crc = compute_crc(bytes, bytecount);
