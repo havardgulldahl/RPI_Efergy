@@ -15,4 +15,4 @@ This is just a quick example on how to get up and running. You'll probably have 
 
     ./makegraph.sh
 
-
+   This will give you a [PNG of the last 24h average usage](example-graph.png).
