@@ -50,6 +50,6 @@ while read DATE TIME USAGE;
 do
     test "x$USAGE" == "x" && continue; # skip empty readings
     echo "--D: $DATE --T: $TIME --U: $USAGE --";
-    rrdtool updatev "$RAWDB" N:$USAGE;
+    rrdtool update "$RAWDB" N:$USAGE;
 done
     
