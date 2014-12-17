@@ -1,16 +1,18 @@
 #!/bin/bash
-# a script to run the data collection from your Efergy thingie and store the
-# readings 
+# A script to run the data collection from your Efergy thingie and store the
+# readings in a round robin database for analytics and nice graphs
+# 
+# dependency: rrdtool
 #
 # (C) havard@gulldahl.no 2014
 # PUBLIC DOMAIN
 
 
 #config
-RECEIVER_GAIN=28.0
-EFERGY_INTERVAL=18 # seconds
+RECEIVER_GAIN=28.0 # fine tune this to get the best readings. 0-50 dB
+EFERGY_INTERVAL=18 # seconds. whatever interval you set up the Efergy transmitter to report
 RECEIVER_FREQUENCY=
-
+#end config
 
 RAWDB=readings.rrd
 TARRIFFDB=tarriffs.rrd
@@ -21,6 +23,7 @@ if [ ! -f "$RAWDB" ]; then
     # keeping the actual values added every $EFERGY_INTERVAL seconds and
     # aggregated with 5 minute resolution for last 2 days and 1 hour resolution
     # for 28 days
+    # TODO: make RRA params products of $EFERGy_INTERVAL
     rrdtool create "$RAWDB" --step $EFERGY_INTERVAL \
     DS:WATT:GAUGE:36:0:3e+04 \
     RRA:AVERAGE:0.5:10:480 \
@@ -42,7 +45,7 @@ fi
 
 
 OLDIFS="$IFS";
-IFS=","
+IFS="," # the field separator from EfergyRPI_log.c
 
 rtl_fm -f 433.55e6 -s 192e3 -r 96e3 -g $RECEIVER_GAIN -p 25 |
 ./EfergyRPI_001 |
